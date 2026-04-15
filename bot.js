@@ -11,7 +11,7 @@ const connection = new Connection(RPC_URL, 'confirmed');
 const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
-// Decodes your Base58 key from the .env - NO HARDCODED KEYS
+// Decodes the Private Key from .env safely
 const wallet = Keypair.fromSecretKey(bs58.decode(process.env.PRIVATE_KEY));
 let lastUpdateId = 0;
 
@@ -132,6 +132,7 @@ async function runQuantumLoop() {
     }
 }
 
+// Check for "status" command via Telegram
 setInterval(async () => {
     try {
         const res = await (await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/getUpdates?offset=${lastUpdateId + 1}`)).json();
